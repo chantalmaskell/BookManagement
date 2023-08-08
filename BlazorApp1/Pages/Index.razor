@@ -1,0 +1,21 @@
+﻿@page "/"
+@inject BlazorApp1.Database.DatabaseConnector Database
+
+<PageTitle>Index</PageTitle>
+
+<h1>book app</h1>
+
+<p>book management app for inventory</p>
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<Counter IncrementAmount="1" />
+
+<button @onclick="TestDatabaseConnection">Test Database Connection</button>
+
+@code {
+    private void TestDatabaseConnection()
+    {
+        Database.OpenConnection();
+    }
+}

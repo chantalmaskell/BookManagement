@@ -27,6 +27,7 @@ namespace BlazorApp1.Database
                     {
                         while (reader.Read())
                         {
+                            // how the output will display for above query
                             Console.WriteLine($"User ID: {reader["user_id"]}, First Name: {reader["first_name"]}, Last Name: {reader["last_name"]}, Email Address: {reader["email_address"]}");
                         }
                     }

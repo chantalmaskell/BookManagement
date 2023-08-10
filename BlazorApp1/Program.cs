@@ -1,36 +1,76 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using BlazorApp1.Models;
 using BlazorApp1.Data;
-using Microsoft.AspNetCore.Components.Web;
-using MySqlConnector;
+using BlazorApp1;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
-
-builder.Services.AddSingleton<BlazorApp1.Database.DatabaseConnector>(_ =>
+namespace BlazorApp1
 {
-    return new BlazorApp1.Database.DatabaseConnector("Server=localhost;Port=5432;User ID=root;Password=00mB%Gv0pT4L;Database=bookapp");
-});
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
 
-var app = builder.Build();
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+        public class Startup
+        {
+            public Startup(IConfiguration configuration)
+            {
+                Configuration = configuration;
+            }
 
-app.UseHttpsRedirection();
+            public IConfiguration Configuration { get; }
 
-app.UseStaticFiles();
+            public void ConfigureServices(IServiceCollection services)
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseMySQL(Configuration.GetConnectionString("DefaultConnection"))); // Adjust connection string
 
-app.UseRouting();
+                services.AddControllers();
 
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
+                services.AddRazorPages();
+            }
 
-app.Run();
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            {
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Error");
+                    app.UseHsts();
+                }
+
+                app.UseHttpsRedirection();
+                app.UseStaticFiles();
+
+                app.UseRouting();
+
+                app.UseAuthorization();
+
+                app.UseEndpoints(endpoints =>
+                {
+                    // Map API controllers
+                    endpoints.MapControllers();
+
+                    // Map Razor Pages
+                    endpoints.MapRazorPages();
+                });
+            }
+        }
+    }

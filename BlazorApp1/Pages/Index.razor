@@ -1,5 +1,4 @@
 ﻿@page "/"
-@inject BlazorApp1.Database.DatabaseConnector Database
 
 <PageTitle>Index</PageTitle>
 
@@ -10,12 +9,3 @@
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <Counter IncrementAmount="1" />
-
-<button @onclick="TestDatabaseConnection">Test Database Connection</button>
-
-@code {
-    private void TestDatabaseConnection()
-    {
-        Database.OpenConnection();
-    }
-}

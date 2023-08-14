@@ -2,10 +2,10 @@
 
 namespace BlazorApp1.Models
 {
-    public class ReadBooks
+    public class Books
     {
         [Key]
-        public int Book_id { get; set; }
+        public int book_id { get; set; }
         
         public int user_id { get; set; }
 
@@ -15,6 +15,9 @@ namespace BlazorApp1.Models
 
         public string author { get; set; }
 
-        public string page_count { get; set; }
+        public int page_count { get; set; }
+
+        public int hasbeenread { get; set; }
+
     }
 }

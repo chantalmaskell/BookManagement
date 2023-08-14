@@ -18,5 +18,8 @@ namespace BlazorApp1.Models
         [Required]
         [MaxLength(100)]
         public string email_address { get; set; }
+
+        [Required]
+        public string hash_password { get; set; }
     }
 }

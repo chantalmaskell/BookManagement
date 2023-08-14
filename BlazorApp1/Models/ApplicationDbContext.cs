@@ -10,8 +10,8 @@ namespace BlazorApp1.Data
         {
         }
 
-        // Define DbSet properties for each entity (model)
+        // Define table properties for each entity (everything in models folder)
         public DbSet<User> Users { get; set; }
-        public DbSet<ReadBooks> ReadBooks { get; set; }
+        public DbSet<Books> Books { get; set; }
     }
 }

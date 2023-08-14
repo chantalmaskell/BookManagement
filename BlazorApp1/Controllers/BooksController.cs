@@ -8,11 +8,11 @@ using BlazorApp1.Data;
 
 namespace BlazorApp1.Controllers
 {
-    [Route("read-books")]
+    [Route("books")]
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext; // Replace with your actual DbContext class
+        private readonly ApplicationDbContext _dbContext;
 
         public BooksController(ApplicationDbContext dbContext)
         {
@@ -20,9 +20,9 @@ namespace BlazorApp1.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReadBooks>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<Books>>> GetBooks()
         {
-            var books = await _dbContext.ReadBooks.ToListAsync();
+            var books = await _dbContext.Books.ToListAsync();
             return Ok(books);
         }
     }

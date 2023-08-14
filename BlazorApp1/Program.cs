@@ -14,6 +14,7 @@ namespace BlazorApp1
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine("IM ALIVE");
             CreateHostBuilder(args).Build().Run();
         }
 

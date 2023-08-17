@@ -8,7 +8,7 @@ using BlazorApp1.Data;
 
 namespace BlazorApp1.Controllers
 {
-    [Route("books")]
+    [Route("books")] // endpoint name
     [ApiController]
     public class BooksController : ControllerBase
     {

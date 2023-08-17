@@ -18,6 +18,5 @@ namespace BlazorApp1.Models
         public int page_count { get; set; }
 
         public int hasbeenread { get; set; }
-
     }
 }

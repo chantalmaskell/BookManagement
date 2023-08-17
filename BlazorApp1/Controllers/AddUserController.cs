@@ -7,6 +7,7 @@ using BlazorApp1.Models;
 using BlazorApp1.Data;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Identity;
+using BCrypt;
 
 namespace BlazorApp1.Controllers
 {
@@ -25,12 +26,12 @@ namespace BlazorApp1.Controllers
         [HttpPost]
         public async Task<ActionResult<AddUser>> PostUserAsync(User newUser) // 'User' is referencing the User model
         {
-            // string hashedPassword = PasswordHash.HashPassword(User.hash_password);
+            //string hashedPassword = PasswordHash.HashPassword(User.hashed_password);
 
             _dbContext.Users.Add(newUser); // 'Users' is referencing the DB in ApplicationDbContext
             await _dbContext.SaveChangesAsync();
 
-            return Ok("User added successfully!"); // response message if user added successfully
+            return Ok("Thanks for registering " + newUser.first_name); // response message if user added successfully
         }
     }
 }

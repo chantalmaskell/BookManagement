@@ -1,0 +1,55 @@
+﻿@page "/fetchfriends"
+@using BlazorApp1.Models
+@using System.Net.Http.Json
+@inject HttpClient Http
+
+<h1>See what your friends are reading</h1>
+
+<p>Share recommendations, send your favioute books, and find friends with similar interests.</p>
+
+@if (users == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.first_name</td>
+                    <td>@user.last_name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<User> users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            users = await Http.GetFromJsonAsync<IEnumerable<User>>("https://localhost:7097/users");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+
+    public class User
+    {
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+    }
+}

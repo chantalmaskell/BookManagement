@@ -8,6 +8,7 @@ using BlazorApp1.Models;
 using BlazorApp1.Data;
 using System.Net.Http;
 using BlazorApp1.Services;
+using BlazorApp1.Pages;
 
 namespace BlazorApp1
 {
@@ -23,6 +24,9 @@ namespace BlazorApp1
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureServices((context, services) =>
+                {
                 });
     }
 
@@ -46,10 +50,10 @@ namespace BlazorApp1
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<Books>(); // this is where you add so you can actually build the components
-            services.AddSingleton<User>();
             services.AddSingleton<Books>();
-            services.AddSingleton<RemoveBook>();
+            services.AddSingleton<User>();
+            services.AddSingleton<FetchBooks>();
+            services.AddSingleton<Counter>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -73,17 +77,12 @@ namespace BlazorApp1
 
             app.UseEndpoints(endpoints =>
             {
-                // Map API controllers
                 endpoints.MapControllers();
 
-                // Map Razor Pages
                 endpoints.MapRazorPages();
 
-                // Map Blazor hub
-                endpoints.MapBlazorHub(); // Add this line
-
-                // Map fallback page for Blazor
-                endpoints.MapFallbackToPage("/_Host"); // Add this line
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

@@ -19,7 +19,7 @@ namespace BlazorApp1.Controllers
         [HttpDelete]
         public async Task<IActionResult> RemoveBookAsync(RemoveBook book_id) // Modify parameter types as needed
         {
-            var existingBook = await _dbContext.Books.FindAsync(book_id.book_id); // Find the existing book by its ID
+            var existingBook = await _dbContext.Books.FindAsync(book_id.book_id); // Find the book by its ID
 
             if (existingBook == null)
             {
@@ -28,7 +28,7 @@ namespace BlazorApp1.Controllers
 
             _dbContext.Books.Remove(existingBook); // Remove the book from the context
 
-            await _dbContext.SaveChangesAsync(); // Save changes to the database
+            await _dbContext.SaveChangesAsync();
 
             return Ok("Book has been removed from your list.");
         }

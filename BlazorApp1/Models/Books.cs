@@ -18,5 +18,8 @@ namespace BlazorApp1.Models
         public int page_count { get; set; }
 
         public int hasbeenread { get; set; }
+        public string book_image { get; set;}
+        public int page_number { get; set; }
+
     }
 }

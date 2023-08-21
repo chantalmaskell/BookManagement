@@ -9,8 +9,10 @@ namespace BlazorApp1.Models
 
         [Required]
         public string last_name { get; set;}
+
         [Required]
         public string email_address { get; set;}
+
         [Required]
         public string hash_password { get; set;}
     }

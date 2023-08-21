@@ -20,8 +20,7 @@ PageTurner is a simple book management web app built using .NET (C#) and Razor. 
 
 ## Prerequisites
 
-- .NET SDK (version X.X or higher)
-- A modern web browser
+- .NET SDK (version 7.0 or higher)
 
 ## Technologies Used
 
@@ -39,3 +38,36 @@ PageTurner is a simple book management web app built using .NET (C#) and Razor. 
 3. Update your reading progress by indicating the current page number.
 4. View your collection of books with cover images and titles.
 5. Remove books from your collection when you're done reading.
+
+## Endpoints (still being updated and tested)
+
+<table>
+  <tr>
+    <th><b>Request type</th>
+    <th><b>Endpoint</th>
+  </tr>
+  <tr>
+    <td>GET</td>
+    <td><code>/books</code></td>
+  </tr>
+<tr>
+    <td>GET</td>
+    <td><code>/users</code></td>
+  </tr>
+  <tr>
+    <td>POST</td>
+    <td><code>/add-book</code></td>
+  </tr>
+        <tr>
+    <td>POST</td>
+    <td><code>/add-user</code></td>
+  </tr>
+<tr>
+    <td>PUT</td>
+    <td><code>/update-book-status</code></td>
+  </tr>
+      <tr>
+    <td>DELETE</td>
+    <td><code>/remove-book</code></td>
+  </tr>
+</table>

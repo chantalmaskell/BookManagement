@@ -4,9 +4,15 @@
 @using BlazorApp1.Controllers
 @inject HttpClient Http
 
-<h1>Browse your collection of books</h1>
+<PageTitle>User Profile</PageTitle>
 
-<p>What have you been reading?</p>
+<h1>Chantal Maskell</h1>
+
+<p>USER'S FAVOURITE BOOKS</p>
+
+<p>USER'S BOOKSHELVES</p>
+
+<p>YOU ARE CURRENTLY READING</p>
 
 @if (Books == null)
 {
@@ -17,12 +23,12 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th>Image</th>
                 <th hidden>Book ID</th>
                 <th>Title</th>
-                <th>Genre</th>
                 <th>Author</th>
+                <th>Genre</th>
                 <th>Number of pages</th>
-                <th>Image</th>
                 <th>Page number</th>
             </tr>
         </thead>
@@ -30,11 +36,11 @@ else
             @foreach (var book in Books)
             {
                 <tr>
-                    <td>@book.book_title</td>
-                    <td>@book.book_genre</td>
-                    <td>@book.author</td>
-                    <td>@book.page_count</td>
                     <td><img src="@book.book_image" alt="Book Cover" width="100" height="150" /></td>
+                    <td><h4><b>@book.book_title</b></h4></td>
+                    <td>@book.author</td>
+                    <td>@book.book_genre</td>
+                    <td>@book.page_count</td>
                     <td>@book.page_number</td>
                     <td><button class="btn btn-secondary">Update progress</button></td>
                     <td><button class="btn btn-primary" @onclick="() => RemoveBook(book.book_id)">Remove book</button></td>
@@ -68,6 +74,11 @@ else
         public int page_count { get; set; }
         public string book_image { get; set; }
         public int page_number { get; set; }
+    }
+
+    public class Users
+    {
+        public string first_name { get; set; }
     }
 
     public async Task RemoveBook(int book_id)

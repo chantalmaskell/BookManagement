@@ -4,11 +4,16 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: #F4F1EA;
+    font-family: sans-serif;
 }
 
 .navbar-brand {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
+    font-family: sans-serif;
+    background-color: #F4F1EA;
+    color: saddlebrown;
+    margin-left: 5%;
 }
 
 .oi {
@@ -18,9 +23,52 @@
     top: -2px;
 }
 
+.update-progress {
+    background-color: #F9F7F4;
+    color: saddlebrown;
+    border-width: 2px;
+    border-color: saddlebrown;
+    border-radius: 5px;
+    font-family: sans-serif;
+}
+
+.update-progress :hover {
+    background-color: saddlebrown;
+    font: white;
+}
+
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
+}
+
+h1 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333333;
+}
+
+h2 {
+    font-size: 15px;
+    font-weight: light;
+    color: #333333;
+}
+
+.book-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 10%;
+    margin-top: 8%;
+}
+
+.book-image img {
+    width: 80px;
+    height: 130px;
+}
+
+.book-details {
+    padding-left: 10px;
 }
 
     .nav-item:first-of-type {
@@ -38,6 +86,7 @@
         display: flex;
         align-items: center;
         line-height: 3rem;
+        font-family: sans-serif;
     }
 
 .nav-item ::deep a.active {

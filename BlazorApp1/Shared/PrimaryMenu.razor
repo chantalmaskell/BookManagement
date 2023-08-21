@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Main Menu with Dropdown</title>
 </head>
 <body>
     <div class="top-row">
         <a href="#" class="menu-link">Home</a>
-        <a href="#" class="menu-link">My Books</a>
+        <a href="fetchbooks" class="menu-link">My Books</a>
         <div class="dropdown">
             <a href="#" class="menu-link">Browse &#9662;</a>
             <div class="dropdown-content">
@@ -19,11 +18,19 @@
                 <a href="#">Comedy</a>
             </div>
         </div>
-        <a href="#" class="menu-link">Friends</a>
+        <a href="fetchfriends" class="menu-link">Friends</a>
         <a href="#" class="menu-link">Explore</a>
+        <input class="search-bar" type="text" placeholder="Search books">
+        <a href="#" class="menu-link"></a>
+        <a href="#" class="menu-link"></a>
+        <div class="dropdown">
+            <a href="#" class="menu-link">Profile &#9662;</a>
+            <div class="dropdown-content">
+                <a href="#">Profile</a>
+                <a href="#">Friends</a>
+                <a href="#">Sign out</a>
+            </div>
+        </div>
     </div>
-    <article>
-        <!-- Your main content here -->
-    </article>
 </body>
 </html>

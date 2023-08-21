@@ -4,15 +4,11 @@
 @using BlazorApp1.Controllers
 @inject HttpClient Http
 
-<PageTitle>User Profile</PageTitle>
+<PageTitle>Users books on PageTurner</PageTitle>
 
-<h1>Chantal Maskell</h1>
+<h1>My Books</h1>
 
-<p>USER'S FAVOURITE BOOKS</p>
-
-<p>USER'S BOOKSHELVES</p>
-
-<p>YOU ARE CURRENTLY READING</p>
+<div class="books-container">
 
 @if (Books == null)
 {
@@ -23,32 +19,44 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Image</th>
+                <th>Cover</th>
                 <th hidden>Book ID</th>
                 <th>Title</th>
                 <th>Author</th>
+                <th>Rating</th>
                 <th>Genre</th>
-                <th>Number of pages</th>
-                <th>Page number</th>
+                <th>Your progress</th>
+                <th>Review</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var book in Books)
             {
                 <tr>
-                    <td><img src="@book.book_image" alt="Book Cover" width="100" height="150" /></td>
+                    <td><img src="@book.book_image" alt="Book Cover" width="80" height="130" /></td>
                     <td><h4><b>@book.book_title</b></h4></td>
                     <td>@book.author</td>
+                    <td>@book.rating</td>
                     <td>@book.book_genre</td>
-                    <td>@book.page_count</td>
-                    <td>@book.page_number</td>
-                    <td><button class="btn btn-secondary">Update progress</button></td>
-                    <td><button class="btn btn-primary" @onclick="() => RemoveBook(book.book_id)">Remove book</button></td>
+                    <td>@book.page_number/@book.page_count pages</td>
+
+                    @if (@book.review == null)
+                    {
+                        <a href="#">Write a review</a>
+                    }
+                    else
+                    {
+                        <td>@book.review</td>
+                    }
+                        <td><button class="update-progress">Update progress</button></td>
+                    <td><button class="remove-book" @onclick="() => RemoveBook(book.book_id)">Remove book</button></td>
                 </tr>
             }
         </tbody>
     </table>
 }
+</div>
+
 
 @code {
     private IEnumerable<Book> Books;
@@ -74,11 +82,8 @@ else
         public int page_count { get; set; }
         public string book_image { get; set; }
         public int page_number { get; set; }
-    }
-
-    public class Users
-    {
-        public string first_name { get; set; }
+        public int rating { get; set; }
+        public string review { get; set; }
     }
 
     public async Task RemoveBook(int book_id)
@@ -102,12 +107,12 @@ else
         var response = await Http.DeleteAsync($"https://localhost:7097/update-status?book_id={book_id}");
         if (response.IsSuccessStatusCode)
         {
-            Console.WriteLine("Page updated successfully.");
+            Console.WriteLine("Progress updated successfully.");
             await OnInitializedAsync();
         }
         else
         {
-            Console.WriteLine("Failed to update page number. Please try again later.");
+            Console.WriteLine("Failed to update progress. Please try again later.");
         }
     }
 }

@@ -10,5 +10,8 @@ namespace BlazorApp1.Models
 
         [Required]
         public int hasbeenread { get; set; }
+
+        [Required]
+        public int page_number { get; set; }
     }
 }

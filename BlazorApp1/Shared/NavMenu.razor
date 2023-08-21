@@ -26,7 +26,7 @@
                         <h1>@book.book_title</h1>
                         <h2>by @book.author</h2>
                         <p>Progress: @book.page_number/@book.page_count</p>
-                        <button class="update-progress">Update progress</button>
+                        <td><button class="update-progress-button" @onclick="() => OpenModal(book.book_id)">Update progress</button></td>
                     </div>
                 </div>
             }
@@ -38,7 +38,37 @@
     </nav>
 </div>
 
+<div id="myModal" class="modal" style="display: @modalDisplay">
+    <div class="modal-content">
+        <h2>Update Progress</h2>
+        <p>Updating progress for book with ID: @modalBookId</p>
+        <form onsubmit="UpdateProgress(modalBookId)">
+            <label for="pageNum">Currently on </label>
+            <input type="number" id="pageNum" name="pageNum" class="input" min="1" max="@modalBookPageCount" @bind="modalPageNumber">
+            <p>of @modalBookPageCount</p>
+            <input type="submit" value="Submit" class="btn btn-primary">
+            <br><br>
+        </form>
+        <button class="btn btn-primary" @onclick="CloseModal">Close</button>
+    </div>
+</div>
+
 @code {
+        private IEnumerable<Book> Books;
+        private string modalDisplay = "none";
+        private int modalBookId;
+
+        private void OpenModal(int book_id)
+        {
+            modalBookId = book_id;
+            modalDisplay = "block";
+        }
+
+        private void CloseModal()
+        {
+            modalDisplay = "none";
+        }
+
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -47,8 +77,6 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
-
-    private IEnumerable<Book> Books;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,4 +99,58 @@
         public int page_number { get; set; }
         public int page_count { get; set; }
     }
+
+    private int modalBookPageCount = 180;
+    private int modalPageNumber;
+
+    private async Task UpdateProgress()
+    {
+        var updateParams = new UpdateBookStatus
+            {
+                book_id = modalBookId,
+                page_number = modalPageNumber,
+            };
+
+        var response = await Http.PutAsJsonAsync("update-book-status", updateParams);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Progress updated successfully.");
+            CloseModal();
+            await OnInitializedAsync();
+        }
+        else
+        {
+            Console.WriteLine("Failed to update progress. Please try again later.");
+        }
+    }
 }
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    .input {
+        width: 50px;
+    }
+
+</style>

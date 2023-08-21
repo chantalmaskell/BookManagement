@@ -10,15 +10,14 @@
 
 <div class="books-container">
 
-@if (Books == null)
-{
-    <p>Loading your books...</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
+    @if (Books == null)
+    {
+        <p>Loading your books...</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <th>Cover</th>
                 <th hidden>Book ID</th>
                 <th>Title</th>
@@ -27,40 +26,68 @@ else
                 <th>Genre</th>
                 <th>Your progress</th>
                 <th>Review</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var book in Books)
-            {
-                <tr>
-                    <td><img src="@book.book_image" alt="Book Cover" width="80" height="130" /></td>
-                    <td><h4><b>@book.book_title</b></h4></td>
-                    <td>@book.author</td>
-                    <td>@book.rating</td>
-                    <td>@book.book_genre</td>
-                    <td>@book.page_number/@book.page_count pages</td>
+            </thead>
+            <tbody>
+                @foreach (var book in Books)
+                {
+                    <tr>
+                        <td><img src="@book.book_image" alt="Book Cover" width="80" height="130" /></td>
+                        <td><h4><b>@book.book_title</b></h4></td>
+                        <td>@book.author</td>
+                        <td>@book.rating</td>
+                        <td>@book.book_genre</td>
+                        <td>@book.page_number/@book.page_count pages</td>
 
-                    @if (@book.review == null)
-                    {
-                        <a href="#">Write a review</a>
-                    }
-                    else
-                    {
-                        <td>@book.review</td>
-                    }
-                        <td><button class="update-progress">Update progress</button></td>
-                    <td><button class="remove-book" @onclick="() => RemoveBook(book.book_id)">Remove book</button></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-</div>
+                        @if (@book.review == null)
+                        {
+                            <a href="#">Write a review</a>
+                        }
+                        else
+                        {
+                            <td>@book.review</td>
+                        }
+                        <td><button class="update-progress-button" @onclick="() => OpenModal(book.book_id)">Update progress</button></td>
+                        <td><button class="remove-book" @onclick="() => RemoveBook(book.book_id)">Remove book</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    </div>
 
+    <!-- Modal for updating progress -->
+    <div id="myModal" class="modal" style="display: @modalDisplay">
+        <div class="modal-content">
+            <h2>Update Progress</h2>
+            <p>Updating progress for book with ID: @modalBookId</p>
+            <form onsubmit="UpdateProgress(modalBookId)">
+                <label for="pageNum">Currently on </label>
+            <input type="number" id="pageNum" name="pageNum" class="input" min="1" max="@modalBookPageCount" @bind="modalPageNumber">
+            <p>of @modalBookPageCount</p>
+                <input type="submit" value="Submit" class="btn btn-primary">
+                <br><br>
+            </form>
+            <button class="btn btn-primary" @onclick="CloseModal">Close</button>
+        </div>
+    </div>
 
 @code {
     private IEnumerable<Book> Books;
+    private string modalDisplay = "none";
+    private int modalBookId;
 
+    private void OpenModal(int book_id)
+    {
+        modalBookId = book_id;
+        modalDisplay = "block";
+    }
+
+    private void CloseModal()
+    {
+        modalDisplay = "none";
+    }
+
+    // Get list of books when page is loaded
     protected override async Task OnInitializedAsync()
     {
         try
@@ -86,6 +113,8 @@ else
         public string review { get; set; }
     }
 
+
+    // Remove book once button is clicked - needs fixing
     public async Task RemoveBook(int book_id)
     {
         Console.WriteLine("Removing book with ID: " + book_id);
@@ -101,13 +130,23 @@ else
         }
     }
 
-    public async Task UpdateProgress(int book_id)
+    private int modalBookPageCount = 180;
+    private int modalPageNumber;
+
+    private async Task UpdateProgress()
     {
-        Console.WriteLine("Updating page number with ID: " + book_id);
-        var response = await Http.DeleteAsync($"https://localhost:7097/update-status?book_id={book_id}");
+        var updateParams = new UpdateBookStatus
+            {
+                book_id = modalBookId,
+                page_number = modalPageNumber,
+            };
+
+        var response = await Http.PutAsJsonAsync("update-book-status", updateParams);
+
         if (response.IsSuccessStatusCode)
         {
             Console.WriteLine("Progress updated successfully.");
+            CloseModal();
             await OnInitializedAsync();
         }
         else
@@ -116,3 +155,32 @@ else
         }
     }
 }
+
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    .input {
+        width: 50px;
+    }
+
+</style>

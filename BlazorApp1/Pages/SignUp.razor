@@ -13,7 +13,7 @@
     <input type="text" id="email" @bind="user.email_address"><br>
     <label for="password">Password:</label><br>
     <input type="password" id="password" @bind="user.hash_password"><br>
-    <button type="submit">Submit</button>
+    <button type="submit" @onclick="Confirmation">Submit</button>
 </form>
 
 @code {
@@ -43,5 +43,10 @@
             // Handle exception
             Console.WriteLine("An error occurred: " + ex.Message);
         }
+    }
+
+    private void Confirmation()
+    {
+        Console.WriteLine("cheers eggy");
     }
 }

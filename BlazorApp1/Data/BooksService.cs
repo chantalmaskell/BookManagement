@@ -9,16 +9,6 @@ namespace BlazorApp1.Services
 {
     public class BooksService
     {
-        private readonly ApplicationDbContext _dbContext;
-
-        public BooksService(ApplicationDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-        public async Task<IEnumerable<Books>> GetBooksAsync()
-        {
-            return await _dbContext.Books.ToListAsync();
-        }
+        //add logic in here later, but for now not needed as all is now handled by the BooksController
     }
 }

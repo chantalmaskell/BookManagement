@@ -51,8 +51,6 @@ namespace BlazorApp1
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<Books>();
-            services.AddSingleton<User>();
-            services.AddSingleton<FetchBooks>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

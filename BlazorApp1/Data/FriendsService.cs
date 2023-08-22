@@ -16,7 +16,7 @@ namespace BlazorApp1.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<User>> GetBooksAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
             return await _dbContext.Users.ToListAsync(); // at some point change this to get data from a Friends table instead. Users is just placeholder for now
         }

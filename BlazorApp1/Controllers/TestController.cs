@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,26 +9,18 @@ using BlazorApp1.Data;
 namespace BlazorApp1.Controllers
 {
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TestController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext; // Replace with your actual DbContext class
+        private readonly ApplicationDbContext _dbContext;
 
-        public UsersController(ApplicationDbContext dbContext)
+        public TestController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        [HttpGet]
-        [Route("users")]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            var users = await _dbContext.Users.ToListAsync();
-            return Ok(users);
-        }
-
         [HttpPost]
-        [Route("add-user")]
-        public async Task<ActionResult<User>> PostUserAsync(User newUser)
+        [Route("test")]
+        public async Task<ActionResult<Test>> PostTestAsync(Test newTest)
         {
             try
             {
@@ -37,10 +28,10 @@ namespace BlazorApp1.Controllers
                 //string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newUser.hash_password);
                 //newUser.hash_password = hashedPassword;
 
-                _dbContext.Users.Add(newUser);
+                _dbContext.test_table.Add(newTest);
                 await _dbContext.SaveChangesAsync();
 
-                return Ok("Thanks for registering " + newUser.first_name);
+                return Ok("Thanks for that");
             }
             catch (Exception ex)
             {

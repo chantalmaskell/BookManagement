@@ -1,17 +1,47 @@
-﻿<h3>Sign up</h3>
+﻿@page "/signup"
 
-<form action="/add-user" method="post">
+@inject HttpClient HttpClient
+
+<h3>Sign up</h3>
+
+<form @onsubmit="SubmitForm" method="post">
     <label for="fname">First name:</label><br>
-    <input type="text" id="fname" name="first_name"><br>
+    <input type="text" id="fname" @bind="user.first_name"><br>
     <label for="lname">Last name:</label><br>
-    <input type="text" id="lname" name="last_name"><br>
+    <input type="text" id="lname" @bind="user.last_name"><br>
     <label for="email">Email address:</label><br>
-    <input type="text" id="email" name="email_address"><br>
+    <input type="text" id="email" @bind="user.email_address"><br>
     <label for="password">Password:</label><br>
-    <input type="text" id="password" name="hash_password"><br>
-    <input type="submit" value="Submit">
+    <input type="password" id="password" @bind="user.hash_password"><br>
+    <button type="submit">Submit</button>
 </form>
 
 @code {
+    private User user = new User();
 
+    private async Task SubmitForm()
+    {
+        try
+        {
+            // Send a POST request to the /add-user endpoint
+            var response = await HttpClient.PostAsJsonAsync("https://localhost:7097/add-user", user);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Successful response handling
+                var result = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(result); // Output the result (you can customize this)
+            }
+            else
+            {
+                // Error handling
+                Console.WriteLine("An error occurred while submitting the form.");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exception
+            Console.WriteLine("An error occurred: " + ex.Message);
+        }
+    }
 }

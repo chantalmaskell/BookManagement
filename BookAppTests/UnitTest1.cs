@@ -5,22 +5,20 @@ using System.Threading.Tasks;
 namespace BookAppTests
 {
     [TestClass]
-    public class UnitTest1
+    public class BooksControllerTests
     {
-        private const string BaseUrl = "https://localhost:7097/update-book-status";
+        private const string BaseUrl = "https://localhost:7097"; // Assuming the base URL is for the books API
 
         [TestMethod]
-
-        // this cant run without running the project, however you cant run tests when project is being run
-        public async Task UpdatesBookStatus()
+        public async Task ReturnsOkStatusCodeForGetBooksEndpoint()
         {
             using (var client = new HttpClient())
             {
-                var content = new StringContent("{\"book_id\": 5, \"newHasbeenread\": 1}", System.Text.Encoding.UTF8, "application/json");
+                // Send a GET request to the /books endpoint
+                var response = await client.GetAsync($"{BaseUrl}/books");
 
-                var response = await client.PutAsync($"{BaseUrl}/update-book-status", content);
-
-                Assert.IsTrue(response.IsSuccessStatusCode, "POST request was not successful.");
+                // Assert that the response status code is 'Ok'
+                Assert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode, "GET request did not return 'Ok' status code.");
             }
         }
     }

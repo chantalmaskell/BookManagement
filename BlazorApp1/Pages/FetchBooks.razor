@@ -18,14 +18,14 @@
     {
         <table class="table">
             <thead>
-                <th>Cover</th>
-                <th hidden>Book ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Rating</th>
-                <th>Genre</th>
-                <th>Your progress</th>
-                <th>Review</th>
+            <th>Cover</th>
+            <th hidden>Book ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Rating</th>
+            <th>Genre</th>
+            <th>Your progress</th>
+            <th>Review</th>
             </thead>
             <tbody>
                 @foreach (var book in Books)
@@ -38,7 +38,7 @@
                         <td>@book.book_genre</td>
                         <td>@book.page_number/@book.page_count pages</td>
 
-                        @if (@book.review == null)
+                        @if (@book.review == "")
                         {
                             <a href="#">Write a review</a>
                         }
@@ -53,7 +53,7 @@
             </tbody>
         </table>
     }
-    </div>
+</div>
 
     <!-- Modal for updating progress -->
     <div id="myModal" class="modal" style="display: @modalDisplay">
@@ -72,7 +72,7 @@
     </div>
 
 @code {
-    private IEnumerable<Book> Books;
+    private IEnumerable<Books> Books;  // Use the "Books" model directly
     private string modalDisplay = "none";
     private int modalBookId;
 
@@ -92,7 +92,7 @@
     {
         try
         {
-            Books = await Http.GetFromJsonAsync<IEnumerable<Book>>("https://localhost:7097/books");
+            Books = await Http.GetFromJsonAsync<IEnumerable<Books>>("https://localhost:7097/books");
         }
         catch (Exception ex)
         {
@@ -100,25 +100,12 @@
         }
     }
 
-    public class Book
-    {
-        public int book_id { get; set; }
-        public string book_title { get; set; }
-        public string book_genre { get; set; }
-        public string author { get; set; }
-        public int page_count { get; set; }
-        public string book_image { get; set; }
-        public int page_number { get; set; }
-        public int rating { get; set; }
-        public string review { get; set; }
-    }
-
-
     // Remove book once button is clicked - needs fixing
     public async Task RemoveBook(int book_id)
     {
         Console.WriteLine("Removing book with ID: " + book_id);
         var response = await Http.DeleteAsync($"https://localhost:7097/remove-book?book_id={book_id}");
+
         if (response.IsSuccessStatusCode)
         {
             Console.WriteLine("Book removed successfully.");
@@ -126,13 +113,15 @@
         }
         else
         {
-            Console.WriteLine("Failed to remove book. Please try again later.");
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("Failed to remove book. Error: " + errorMessage);
         }
     }
 
     private int modalBookPageCount = 180;
     private int modalPageNumber;
 
+    // update page number of the book. If it is the same as the number of total pages, then mark the book as read - needs fixing
     private async Task UpdateProgress()
     {
         var updateParams = new UpdateBookStatus
@@ -165,18 +154,18 @@
         top: 0;
         width: 100%;
         height: 100%;
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
+        overflow: auto;
+        background-color: rgb(0,0,0);
         background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     }
 
     /* Modal Content/Box */
     .modal-content {
         background-color: #fefefe;
-        margin: 15% auto; /* 15% from the top and centered */
+        margin: 15% auto;
         padding: 20px;
         border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
+        width: 80%;
     }
 
     .input {

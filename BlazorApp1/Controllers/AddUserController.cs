@@ -1,38 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using BlazorApp1.Models;
 using BlazorApp1.Data;
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.AspNetCore.Identity;
 using BCrypt;
 
 namespace BlazorApp1.Controllers
 {
     [Route("add-user")]
     [ApiController]
-
     public class AddUserController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public AddUserController (ApplicationDbContext dbContext)
+        public AddUserController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         [HttpPost]
-        public async Task<ActionResult<AddUser>> PostUserAsync(User newUser) // 'User' is referencing the User model
+        public async Task<ActionResult<User>> PostUserAsync(User newUser)
         {
-            //string hashedPassword = PasswordHash.HashPassword(User.hashed_password);
+            // Hash the password before storing it
+            //string hashedPassword = BCrypt.Net.BCrypt.HashPassword(newUser.hash_password);
+            //newUser.hash_password = hashedPassword;
 
-            _dbContext.Users.Add(newUser); // 'Users' is referencing the DB in ApplicationDbContext
+            _dbContext.Users.Add(newUser);
             await _dbContext.SaveChangesAsync();
 
-            return Ok("Thanks for registering " + newUser.first_name); // response message if user added successfully
+            return Ok("Thanks for registering " + newUser.first_name);
         }
     }
 }
-

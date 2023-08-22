@@ -22,9 +22,9 @@ namespace BlazorApp1.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Books>> PostBookAsync(Books newBook) // User is referencing the User model
+        public async Task<ActionResult<Books>> PostBookAsync(Books newBook) // Books is referencing the Books model
         {
-            _dbContext.Books.Add(newBook); // Users is referencing the DB in ApplicationDbContext
+            _dbContext.Books.Add(newBook); // Books is referencing the DB in ApplicationDbContext
             await _dbContext.SaveChangesAsync();
 
             return Ok("Book has been added to user successfully"); // response message if book added successfully

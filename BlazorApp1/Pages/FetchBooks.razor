@@ -12,7 +12,7 @@
 
     @if (Books == null)
     {
-        <p>Loading your books...</p>
+        <p>“Beware; for I am fearless, and therefore powerful.” — Mary Shelley, Frankenstein</p>
     }
     else
     {
@@ -46,8 +46,8 @@
                         {
                             <td>@book.review</td>
                         }
-                        <td><button class="update-progress-button" @onclick="() => OpenModal(book.book_id)">Update progress</button></td>
-                        <td><button class="remove-book" @onclick="() => RemoveBook(book.book_id)">Remove book</button></td>
+                        <td><button class="outline-button" @onclick="() => OpenModal(book.book_id)">Update progress</button></td>
+                        <td><button class="outline-button" @onclick="() => RemoveBook(book.book_id)">Remove book</button></td>
                     </tr>
                 }
             </tbody>
@@ -170,6 +170,23 @@
 
     .input {
         width: 50px;
+    }
+
+    .table {
+        margin: auto;
+        margin-top: 5%;
+    }
+
+    .outline-button {
+        background-color: #fefefe;
+        border-color: saddlebrown;
+        border-radius: 8px;
+    }
+
+    .outline-button:hover {
+        background: saddlebrown;
+        color: #fefefe;
+        border-color: saddlebrown;
     }
 
 </style>

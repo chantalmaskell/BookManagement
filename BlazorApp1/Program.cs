@@ -9,6 +9,7 @@ using BlazorApp1.Data;
 using System.Net.Http;
 using BlazorApp1.Services;
 using BlazorApp1.Pages;
+using BlazorApp1.Controllers;
 
 namespace BlazorApp1
 {
@@ -49,11 +50,9 @@ namespace BlazorApp1
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<Books>();
             services.AddSingleton<User>();
             services.AddSingleton<FetchBooks>();
-            services.AddSingleton<Counter>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

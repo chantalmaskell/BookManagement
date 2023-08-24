@@ -1,25 +1,31 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System;
+using NUnit.Framework;
+using BlazorApp1.Data;
+using MySqlX.XDevAPI.Common;
 
-namespace BookAppTests
+namespace BlazorApp1.Tests
 {
-    [TestClass]
-    public class BooksControllerTests
+    [TestFixture]
+    public class PasswordValidationTests
     {
-        private const string BaseUrl = "https://localhost:7097"; // Assuming the base URL is for the books API
+        [Test]
+        public void ValidatePassword_TooShort_ReturnsError()
+        { 
+            var userService = new UserService();
+            var passwordLengthRange = new UserService.Range(8, 20);
+            string result = userService.ValidatePassword("test", passwordLengthRange);
 
-        [TestMethod]
-        public async Task ReturnsOkStatusCodeForGetBooksEndpoint()
+            Assert.AreEqual(result, "Password out of range");
+        }
+
+        [Test]
+        public void ValidatePassword_TooLong_ReturnsError()
         {
-            using (var client = new HttpClient())
-            {
-                // Send a GET request to the /books endpoint
-                var response = await client.GetAsync($"{BaseUrl}/books");
-
-                // Assert that the response status code is 'Ok'
-                Assert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode, "GET request did not return 'Ok' status code.");
-            }
+            var userService = new UserService();
+            var passwordLengthRange = new UserService.Range(8, 20);
+            string result = userService.ValidatePassword("professorstinksalotthethird", passwordLengthRange);
+            
+            Assert.AreEqual(result, "Password out of range");
         }
     }
 }

@@ -9,22 +9,29 @@ namespace BlazorApp1.Tests
     public class PasswordValidationTests
     {
         [Test]
-        public void ValidatePassword_TooShort_ReturnsError()
+        public void ValidatePassword_CheckIfTooShort_ReturnsError()
         { 
             var userService = new UserService();
-            var passwordLengthRange = new UserService.Range(8, 20);
-            string result = userService.ValidatePassword("test", passwordLengthRange);
+            string result = userService.ValidatePassword("shortp");
 
             Assert.AreEqual(result, "Password out of range");
         }
 
         [Test]
-        public void ValidatePassword_TooLong_ReturnsError()
+        public void ValidatePassword_CheckBlankPassword_ReturnsError()
         {
             var userService = new UserService();
-            var passwordLengthRange = new UserService.Range(8, 20);
-            string result = userService.ValidatePassword("professorstinksalotthethird", passwordLengthRange);
+            string result = userService.ValidatePassword("");
             
+            Assert.AreEqual(result, "No password entered.");
+        }
+
+        [Test]
+        public void ValidatePassword_CheckIfTooLong_ReturnError()
+        {
+            var userService = new UserService();
+            string result = userService.ValidatePassword("thisisthelongestpasswordintheworld");
+
             Assert.AreEqual(result, "Password out of range");
         }
     }
